@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 
-class Methods:
+class Methods: # toutes les methods dans ce fichier
     def __init__(self, ui):
         self.ui = ui
         self.api_key = "sk-5e4336b43d104960aa865b9941d3948d"
