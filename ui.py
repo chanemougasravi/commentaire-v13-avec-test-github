@@ -35,7 +35,7 @@ class InterfaceGraphique:
                     values=["Masculin", "Féminin"], state="readonly").grid(row=0, column=3, padx=5)
 
         # Note
-        tk.Label(cadre_saisie, text="Note:").grid(row=0, column=4, padx=5, sticky="w")
+        tk.Label(cadre_saisie, text="Moyenne:").grid(row=0, column=4, padx=5, sticky="w")
         self.entry_note = tk.Entry(cadre_saisie, width=10)
         self.entry_note.grid(row=0, column=5, padx=5)
 
