@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 
-class Methods: # toutes les methods dans ce fichier
+class Methods:
     def __init__(self, ui):
         self.ui = ui
         self.api_key = "sk-5e4336b43d104960aa865b9941d3948d"
@@ -38,6 +38,7 @@ class Methods: # toutes les methods dans ce fichier
         sexe = self.ui.sexe_var.get()
         concentration = self.ui.concentration_var.get()
         attitude = self.ui.attitude_var.get()
+        participation = self.ui.participation_var.get()  # Récupérer la participation
 
         if not all([prenom, note]):
             messagebox.showwarning("Champs manquants", "Veuillez remplir tous les champs obligatoires")
@@ -54,13 +55,22 @@ class Methods: # toutes les methods dans ce fichier
         input_text = f"Élève {prenom} ({sexe}) - Note: {note}/20\n"
         input_text += f"Concentration: {concentration}, Attitude: {attitude}\n"
         input_text += "Générer un commentaire constructif de 5 lignes maximum."
-
+        input_text += f"Participation: {participation}\n"  # Ajouter à la requête
         commentaire = self.generate_comment_with_deepseek(input_text)
         
         self.ui.text_resultat.config(state=tk.NORMAL)
         self.ui.text_resultat.delete(1.0, tk.END)
         self.ui.text_resultat.insert(tk.END, commentaire or "Échec de génération")
         self.ui.text_resultat.config(state=tk.DISABLED)
+
+    def copier_commentaire(self):
+        commentaire = self.ui.text_resultat.get(1.0, tk.END).strip()
+        if commentaire:
+            self.ui.root.clipboard_clear()
+            self.ui.root.clipboard_append(commentaire)
+            messagebox.showinfo("Copié", "Le commentaire a été copié dans le presse-papiers.")
+        else:
+            messagebox.showwarning("Avertissement", "Aucun commentaire à copier.")
 
     def effacer_tout(self):
         self.ui.entry_prenom.delete(0, tk.END)
@@ -71,31 +81,16 @@ class Methods: # toutes les methods dans ce fichier
         self.ui.text_resultat.config(state=tk.NORMAL)
         self.ui.text_resultat.delete(1.0, tk.END)
         self.ui.text_resultat.config(state=tk.DISABLED)
-
-    # Les méthodes copier_commentaire et enregistrer_donnees restent similaires
-    # ... (adaptez-les selon le même modèle)
-    def copier_commentaire(self):
-        """
-        Copy the generated comment to the clipboard.
-        """
-        commentaire = self.ui.text_resultat.get(1.0, tk.END).strip()
-        if commentaire:
-            self.ui.root.clipboard_clear()
-            self.ui.root.clipboard_append(commentaire)
-            messagebox.showinfo("Copié", "Le commentaire a été copié dans le presse-papiers.")
-        else:
-            messagebox.showwarning("Avertissement", "Aucun commentaire à copier.")
+        self.ui.participation_var.set("Bonne")  # Réinitialiser la participation
 
     def enregistrer_donnees(self):
-        """
-        Save the student's data to the database.
-        """
         prenom = self.ui.entry_prenom.get()
-        sexe = self.ui.sexe_var.get()  # Récupérer le sexe de l'élève
+        sexe = self.ui.sexe_var.get()
         note = self.ui.entry_note.get()
-        commentaire = self.ui.text_resultat.get(1.0, tk.END).strip()
         concentration = self.ui.concentration_var.get()
-        agitation = self.ui.agitation_var.get()
+        attitude = self.ui.attitude_var.get()
+        commentaire = self.ui.text_resultat.get(1.0, tk.END).strip()
+        participation = self.ui.participation_var.get()  # Nouvelle variable
 
         if not prenom or not note or not commentaire:
             messagebox.showwarning("Avertissement", "Veuillez remplir tous les champs.")
@@ -111,5 +106,5 @@ class Methods: # toutes les methods dans ce fichier
             return
 
         # Enregistrer dans la base de données
-        self.ui.db.enregistrer_eleve(prenom, sexe, note, commentaire, concentration, agitation)
+        self.ui.db.enregistrer_eleve(prenom, sexe, note, concentration, attitude, participation, commentaire)
         messagebox.showinfo("Succès", "Les données ont été enregistrées avec succès.")

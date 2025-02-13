@@ -1,3 +1,4 @@
+# database.py corrigé
 import sqlite3
 import os
 
@@ -17,16 +18,17 @@ class Database:
                 note REAL NOT NULL,
                 concentration TEXT NOT NULL,
                 attitude TEXT NOT NULL,
+                participation TEXT NOT NULL,  -- Correction ici (remplacé # par --)
                 commentaire TEXT NOT NULL
             )
         """)
         self.conn.commit()
 
-    def enregistrer_eleve(self, prenom, sexe, note, concentration, attitude, commentaire):
+    def enregistrer_eleve(self, prenom, sexe, note, concentration, attitude, participation, commentaire):
         self.cursor.execute("""
-            INSERT INTO eleves (prenom, sexe, note, concentration, attitude, commentaire)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (prenom, sexe, note, concentration, attitude, commentaire))
+            INSERT INTO eleves (prenom, sexe, note, concentration, attitude, participation, commentaire)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (prenom, sexe, note, concentration, attitude, participation, commentaire))
         self.conn.commit()
 
     def __del__(self):

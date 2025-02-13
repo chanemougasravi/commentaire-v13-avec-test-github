@@ -16,38 +16,40 @@ class InterfaceGraphique:
         self.concentration_var = tk.StringVar(value="Bonne")
         self.attitude_var = tk.StringVar(value="Bonne")
         self.sexe_var = tk.StringVar(value="Masculin")
+        self.participation_var = tk.StringVar(value="Bonne")  # Nouveau
 
         self.creer_widgets()
 
     def creer_widgets(self):
         # Cadre pour les champs de saisie
         cadre_saisie = tk.Frame(self.root)
-        cadre_saisie.grid(row=0, column=0, columnspan=4, padx=10, pady=10, sticky="ew")
+        cadre_saisie.grid(row=0, column=0, columnspan=6, padx=10, pady=10, sticky="ew")
 
-        # Prénom
+        # Ligne 0
         tk.Label(cadre_saisie, text="Prénom:").grid(row=0, column=0, padx=5, sticky="w")
-        self.entry_prenom = tk.Entry(cadre_saisie, width=20)
+        self.entry_prenom = tk.Entry(cadre_saisie, width=23)
         self.entry_prenom.grid(row=0, column=1, padx=5)
 
-        # Sexe
         tk.Label(cadre_saisie, text="Sexe:").grid(row=0, column=2, padx=5, sticky="w")
         ttk.Combobox(cadre_saisie, textvariable=self.sexe_var, 
                     values=["Masculin", "Féminin"], state="readonly").grid(row=0, column=3, padx=5)
 
-        # Note
-        tk.Label(cadre_saisie, text="Moyenne:").grid(row=0, column=4, padx=5, sticky="w")
-        self.entry_note = tk.Entry(cadre_saisie, width=10)
+        tk.Label(cadre_saisie, text="Note:").grid(row=0, column=4, padx=5, sticky="w")
+        self.entry_note = tk.Entry(cadre_saisie, width=23)
         self.entry_note.grid(row=0, column=5, padx=5)
 
-        # Concentration
+        # Ligne 1
         tk.Label(cadre_saisie, text="Concentration:").grid(row=1, column=0, padx=5, sticky="w")
         ttk.Combobox(cadre_saisie, textvariable=self.concentration_var,
                     values=["Bonne", "Moyenne", "Mauvaise"], state="readonly").grid(row=1, column=1, padx=5)
 
-        # Attitude
         tk.Label(cadre_saisie, text="Attitude:").grid(row=1, column=2, padx=5, sticky="w")
         ttk.Combobox(cadre_saisie, textvariable=self.attitude_var,
                     values=["Bonne", "Moyenne", "Agitée"], state="readonly").grid(row=1, column=3, padx=5)
+
+        tk.Label(cadre_saisie, text="Participation:").grid(row=1, column=4, padx=5, sticky="w")
+        ttk.Combobox(cadre_saisie, textvariable=self.participation_var,
+                    values=["Bonne", "Moyenne", "Insuffisante"], state="readonly").grid(row=1, column=5, padx=5)
 
         # Bouton Valider
         tk.Button(self.root, text="Valider", command=self.methods.afficher_commentaire)\
